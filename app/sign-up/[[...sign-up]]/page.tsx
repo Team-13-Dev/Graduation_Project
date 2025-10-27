@@ -15,7 +15,8 @@ const SignUp = () => {
     const [password, setPassword] = useState<string>("");
     const [isVerifying, setIsVerifying] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-   
+    const [authLoading, setAuthLoading] = useState<boolean>(false);
+    
     const handleGoogleSignUp = async () => {
         if (!isLoaded) return;
         setLoading(true);
@@ -38,10 +39,12 @@ const SignUp = () => {
         if (!isLoaded) return;
 
         try {
-        await signUp.create({ emailAddress: email, password });
+            setAuthLoading(true);
+            await signUp.create({ emailAddress: email, password });
 
-        await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-        setIsVerifying(true);
+            await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+            setAuthLoading(false);
+            setIsVerifying(true);
         } catch (err) {
         console.error("Sign up failed", err);
         }
@@ -53,13 +56,13 @@ const SignUp = () => {
   
   return (
     <div className='w-full min-h-screen grid place-content-center bg-[#f1f5f9]'>
-      <div  className='border-2 border-[#C5D0E6] bg-[#F1F5F9] rounded-xl text-center p-6 sm:p-8 md:p-10 lg:p-13 shadow-md shadow-[#C4D0E5] mx- lg:mx-0'>
+      <div  className='lg:border-2 border-[#C5D0E6] bg-[#F1F5F9] rounded-xl text-center p-6 sm:p-8 md:p-10 lg:p-13 lg:shadow-md shadow-[#C4D0E5] mx- lg:mx-0'>
         {!isVerifying ? 
             <>
                 <div className='grid gap-4'>
-                    <h1 className='text-[#003091] font-medium text-2xl'>Sign Up</h1>    
-                    <p className='text-[#babdc1] tracking-wide'>Join the community today</p>
-                    <button onClick={handleGoogleSignUp} className='border text-center mx-auto border-gray-200 shadow-xl rounded-full px-12 py-2 font-normal flex items-center gap-2 hover:opacity-70 hover:shadow-2xl  duration-500 cursor-pointer'>
+                    <h1 className='text-[#003091] font-medium text-xl lg:text-2xl'>Sign Up</h1>    
+                    <p className='text-[#babdc1] tracking-wide text-sm lg:text-md'>Join the community today</p>
+                    <button onClick={handleGoogleSignUp} className='border text-center mx-auto border-gray-200 shadow-xl rounded-full px-6 py-1 lg:px-12 lg:py-2 font-normal flex items-center gap-2 hover:opacity-70 hover:shadow-2xl  duration-500 cursor-pointer'>
                         {loading ? 
                             <div className="animate-pulse">
                                 Redirecting...
@@ -74,7 +77,7 @@ const SignUp = () => {
                         }
                     </button>
                 </div>
-                <div className='my-12'>
+                <div className='my-8 lg:my-12'>
                     Or
                 </div>
                 <form onSubmit={handleSignUp} >
@@ -94,7 +97,7 @@ const SignUp = () => {
                     </div>
                     <div id="clerk-captcha" />
                     <div className='mt-12'>
-                        <Button variant='primary_btn'>sign up</Button>
+                        <Button disabled={authLoading} variant={!authLoading ? "primary_btn" : "loading_btn"}>{!authLoading ? "sign up" : "loading..."}</Button>
                     </div>
                     <div>
                         <p className='text-black/25 mt-6'>Already a member? <Link href={"/sign-in"} className='text-[#003091] font-medium hover:underline underline-offset-2'>Sign in</Link></p>
@@ -102,12 +105,12 @@ const SignUp = () => {
                 </form>
             </>
             :
-            <div className="flex flex-col justify-between min-h-[50vh]">
+            <div className="flex flex-col justify-between min-h-[50vh] ">
                 <div className="text-left">
                     <h1 className="text-primary font-medium text-2xl">
                         Verify account with OTP
                     </h1>
-                    <h3 className="text-[#535A68]">We've sent a code to @{email}</h3>
+                    <h3 className="text-[#535A68] text-sm lg:text-md mt-1">We've sent a code to @{email}</h3>
                     <OTPVerification />
                 </div>
                 <div>

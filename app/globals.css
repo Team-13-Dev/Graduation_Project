@@ -6,6 +6,9 @@
 .primary_btn {
   @apply p-[10px] rounded-full text-white bg-[#003091] w-[300px] lg:w-[370px]  mx-auto cursor-pointer hover:opacity-85
 }
+.loading_btn {
+  @apply p-[10px] rounded-full text-white bg-[#B6B7BB] w-[300px] lg:w-[370px]  mx-auto cursor-pointer hover:opacity-85 animate-pulse
+}
 .text-primary {
   @apply text-[#003091]
 }

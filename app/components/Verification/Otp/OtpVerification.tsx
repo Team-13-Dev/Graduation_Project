@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 
 export default function OTPVerification() {
     const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
@@ -59,59 +60,47 @@ export default function OTPVerification() {
         <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center justify-center gap-6"
+        className="flex flex-col items-center justify-center gap-6 mt-4"
         >
-        <h2 className="text-2xl font-semibold tracking-wide">
-            {status === "success" && "✅ Verified"}
-        </h2>
-
-        {status !== "success" && (
             <div className="w-full flex lg:justify-around gap-3">
-            {otp.map((digit, i) => (
-                <input
-                key={i}
-                ref={(el) => {
-                        inputsRef.current[i] = el
-                    }}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                disabled={status === "loading"}
-                onChange={(e) => handleChange(e.target.value, i)}
-                onKeyDown={(e) => handleKeyDown(e, i)}
-                className={`w-12 h-12 lg:w-14 lg:h-14 bg-[#D9E1EF] focus:shadow-md focus:shadow-[#B6D8ED] text-center text-xl border rounded-xl focus:outline-none focus:ring-2 transition-all ${
-                    status === "error" ? "border-red-500" : "focus:ring-blue-500"
-                }`}
-                />
-            ))}
+                {otp.map((digit, i) => (
+                    <input
+                    key={i}
+                    ref={(el) => {
+                            inputsRef.current[i] = el
+                        }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    disabled={status === "loading" || status === "success"}
+                    onChange={(e) => handleChange(e.target.value, i)}
+                    onKeyDown={(e) => handleKeyDown(e, i)}
+                    className={`w-12 h-12 lg:w-14 lg:h-14 bg-[#D9E1EF] focus:shadow-md focus:shadow-[#B6D8ED] text-center text-xl border rounded-xl focus:outline-none focus:ring-1 transition-all ${
+                        status === "error" ? "border-red-500" : status === "success" ? "ring-1 ring-[#319F43]" : "focus:ring-blue-500" 
+                    }`}
+                    />
+                ))}
             </div>
-        )}
+            {status === "success" && 
+                <div className="flex items-center justify-between w-full">
+                    <p className="text-[#319F43]">Verified</p>
+                    <IoIosCheckmarkCircle className="text-[#93E483] text-lg lg:text-2xl"/>
+                </div>
+            }
+            {status === "loading" && (
+                <p className="text-gray-500 text-sm animate-pulse">Verifying...</p>
+            )}
 
-        {status === "loading" && (
-            <p className="text-gray-500 text-sm animate-pulse">Verifying...</p>
-        )}
-
-        {status === "error" && (
-            <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-red-500 text-sm font-medium"
-            >
-            {errorMessage}
-            </motion.p>
-        )}
-
-        {status === "success" && (
-            <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 150 }}
-            className="text-green-600 font-medium text-lg"
-            >
-            Your email has been verified successfully 🎉
-            </motion.div>
-        )}
+            {status === "error" && (
+                <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-red-500 text-sm font-medium"
+                >
+                {errorMessage}
+                </motion.p>
+            )}
         </motion.div>
     );
 }
