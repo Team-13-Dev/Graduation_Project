@@ -1,6 +1,6 @@
 "use client";
 
-import { useClerk, useSignUp } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
 import { useState } from "react";
 import google_logo from "@/public/assets/logos/google_logo.png"
 import Image from 'next/image'
@@ -14,20 +14,24 @@ const SignUp = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isVerifying, setIsVerifying] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
    
     const handleGoogleSignUp = async () => {
         if (!isLoaded) return;
+        setLoading(true);
 
         try {
-            await signUp.authenticateWithRedirect({
-                strategy: "oauth_google",
-                redirectUrl: "/sso-callback", 
-                redirectUrlComplete: "/dashboard", 
-            });
+        signUp.authenticateWithRedirect({
+            strategy: "oauth_google",
+            redirectUrl: "/sso-callback",
+            redirectUrlComplete: "/dashboard",
+        });
         } catch (err) {
         console.error("Google Sign-Up Error:", err);
+        setLoading(false);
         }
     };
+
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -56,10 +60,18 @@ const SignUp = () => {
                     <h1 className='text-[#003091] font-medium text-2xl'>Sign Up</h1>    
                     <p className='text-[#babdc1] tracking-wide'>Join the community today</p>
                     <button onClick={handleGoogleSignUp} className='border text-center mx-auto border-gray-200 shadow-xl rounded-full px-12 py-2 font-normal flex items-center gap-2 hover:opacity-70 hover:shadow-2xl  duration-500 cursor-pointer'>
-                        <Image src={google_logo} alt='Google Logo' width={30}/>
-                        <p>
-                            Use Google account
-                        </p>
+                        {loading ? 
+                            <div className="animate-pulse">
+                                Redirecting...
+                            </div>
+                            :
+                            <>
+                                <Image src={google_logo} alt='Google Logo' width={30}/>
+                                <p>
+                                    Use Google account
+                                </p>
+                            </>
+                        }
                     </button>
                 </div>
                 <div className='my-12'>
