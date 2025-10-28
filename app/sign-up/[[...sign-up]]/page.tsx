@@ -25,7 +25,7 @@ const SignUp = () => {
         signUp.authenticateWithRedirect({
             strategy: "oauth_google",
             redirectUrl: "/sso-callback",
-            redirectUrlComplete: "/dashboard",
+            redirectUrlComplete: "/onboarding",
         });
         } catch (err) {
         console.error("Google Sign-Up Error:", err);

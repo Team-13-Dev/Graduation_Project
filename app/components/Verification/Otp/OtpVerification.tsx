@@ -43,10 +43,10 @@ export default function OTPVerification() {
         setStatus("loading");
 
         try {
-        const completeSignUp = await signUp.attemptEmailAddressVerification({ code });
-        await setActive({ session: completeSignUp.createdSessionId }); 
-        setStatus("success");
-        router.push("/")
+            const completeSignUp = await signUp.attemptEmailAddressVerification({ code });
+            await setActive({ session: completeSignUp.createdSessionId }); 
+            setStatus("success");
+            router.push("/onboarding")
         } catch (err: any) {
         console.error(err);
         setStatus("error");

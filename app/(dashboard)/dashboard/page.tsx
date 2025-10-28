@@ -2,8 +2,8 @@ import React from 'react'
 
 const Page = () => {
   return (
-    <div>
-      
+    <div className='w-full h-screen grid place-content-center text-black'>
+      Under development
     </div>
   )
 }

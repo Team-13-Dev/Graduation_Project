@@ -30,8 +30,8 @@ export const users = pgTable("users", {
   companySize: integer("company_size"),
   companyLocation: text("company_location"),
 
-  currency: varchar("currency", { length: 10 }).default("USD"),
-  timezone: varchar("timezone", { length: 100 }).default("UTC"),
+  currency: varchar("currency", { length: 10 }).default("EGP"),
+  timezone: varchar("timezone", { length: 100 }).default("EET"),
   language: varchar("language", { length: 10 }).default("en"),
 
   notifyEmail: boolean("notify_email").default(true),
