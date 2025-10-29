@@ -86,7 +86,12 @@ const SignUp = () => {
                             <label>
                                 Email
                             </label>
-                            <input type="text" value={email} onChange={e => setEmail(e.target.value)} required className='bg-none border-b focus:outline-none focus:border-blue-600 focus:border-b duration-400 lg:min-w-[420px]'/>
+                            <input type="text" 
+                                value={email} 
+                                onChange={e => setEmail(e.target.value)} 
+                                required 
+                                className='bg-none border-b focus:outline-none focus:border-blue-600 focus:border-b duration-400 lg:min-w-[420px]'
+                            />
                         </div>
                         <div className='grid gap-2 text-left'>
                             <label>
